@@ -1,0 +1,20 @@
+kind: Kustomization
+
+resources:
+- svc.yml
+- sts.yml
+
+configMapGenerator:
+- name: influxdb-config
+  files:
+  - influxdb.conf
+
+secretGenerator:
+  - name: influxdb-secret
+    type: Opaque
+    literals:
+    - influxdb-username=admin
+    - influxdb-password=SecurePassword123
+    - influxdb-org=gtm  
+    - influxdb-bucket=gtm
+    - influxdb-admin-token=gtm-token
