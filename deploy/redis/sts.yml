@@ -1,0 +1,70 @@
+
+# Redis StatefulSet
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis
+spec:
+  serviceName: redis
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:7-alpine
+        ports:
+        - containerPort: 6379
+          name: redis
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        volumeMounts:
+        - name: redis-config
+          mountPath: /usr/local/etc/redis/
+        - name: redis-data
+          mountPath: /data
+        command:
+          - "redis-server"
+          - "/usr/local/etc/redis/redis.conf"
+          - "--requirepass"
+          - "$(REDIS_PASSWORD)"
+        env:
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: redis-secret
+              key: redis-password
+        livenessProbe:
+          exec:
+            command: ["redis-cli", "-a", "$(REDIS_PASSWORD)", "ping"]
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command: ["redis-cli", "-a", "$(REDIS_PASSWORD)", "ping"]
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: redis-config
+        configMap:
+          name: redis-config
+  # 定义PVC模板，StatefulSet会为每个副本创建独立的PVC
+  volumeClaimTemplates:
+  - metadata:
+      name: redis-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "local-path"  # 引用上面定义的存储类
+      resources:
+        requests:
+          storage: 1Gi  # 请求1GB存储
