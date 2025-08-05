@@ -13,4 +13,4 @@ secretGenerator:
   - name: redis-secret
     type: Opaque
     literals:
-    - redis-password=123456
+    - redis-password=ighoKohkoniu5shohqu3kaiSahshae
