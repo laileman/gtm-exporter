@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtm-pod
+  namespace: default
+  labels:
+    app: gtm-pod
+spec:
+  selector:
+    matchLabels:
+      app: gtm-pod
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gtm-pod
+    spec:
+      containers:
+      - name: gtm-pod
+        image:  lailemon/gtm-pod:v0.0.1
+        args:
+        - --config
+        - /gtm-pod/config.yml
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        ports:
+        - containerPort:  8080
+          name: http
+        volumeMounts:
+        - name: localtime
+          mountPath: /etc/localtime
+        - name: config
+          mountPath: /gtm-pod
+        resources:
+          requests:
+            memory: 100Mi
+            cpu: 100m
+          limits:
+            memory: 100Mi
+            cpu: 100m
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Shanghai
+        - name: config
+          configMap:
+            name: gtm-pod
+      restartPolicy: Always

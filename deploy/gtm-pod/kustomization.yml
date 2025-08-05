@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- deploy.yml
+- svc.yml
+
+
+images:
+- name: lailemon/gtm-pod
+  newTag: v0.0.2
+
+
+configMapGenerator:
+- files:
+  - config.yml
+  name: gtm-pod
+  
+labels:
+- includeSelectors: true
+  pairs:
+    app: gtm-pod
