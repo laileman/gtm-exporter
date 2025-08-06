@@ -1,0 +1,8 @@
+kind: Kustomization
+resources:
+- ds.yml
+configMapGenerator:
+- name: fluent-bit
+  files:
+  - fluent-bit.conf
+  - parser.conf
