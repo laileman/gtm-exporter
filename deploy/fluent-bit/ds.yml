@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: fluent-bit
-        image: fluent/fluent-bit:4.0.6
+        image: lailemon/fluent-bit:4.0.6-lua-v0.0.7
         resources:
           limits:
             memory: 200Mi
