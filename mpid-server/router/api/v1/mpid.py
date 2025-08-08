@@ -51,3 +51,11 @@ async def get_mpid(mpid: int):
     if ip is None:
         return Response(code=1, msg="mpid not found", data={})
     return Response(code=0, msg="success", data={"mpid": mpid, "ip": ip})
+
+# 从 ip 获取 mpid
+@router.get("/ip/{ip}", response_model=Response)
+async def get_mpid_by_ip(ip: str):
+    mpid = redis_api.get_by_ip(ip)
+    if mpid is None:
+        return Response(code=1, msg="ip not found", data=None)
+    return Response(code=0, msg="success", data={"mpid": int(mpid), "ip": ip})

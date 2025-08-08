@@ -31,6 +31,14 @@ class RedisApi:
             )
         return data
 
+    def get_by_ip(self, ip):
+        keys = self.redis_conn.keys()
+        for key in keys:
+            value = self.redis_conn.get(key)
+            if value.decode() == ip:
+                return key.decode()
+        return None
+
 
 redis_api = RedisApi(
     host=config.redis_host,

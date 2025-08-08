@@ -8,7 +8,7 @@ resources:
 
 images:
 - name: lailemon/mpid-server
-  newTag: v0.0.1
+  newTag: v0.0.2
 
 
 configMapGenerator:
