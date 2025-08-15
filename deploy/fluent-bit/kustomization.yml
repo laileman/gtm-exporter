@@ -1,6 +1,7 @@
 kind: Kustomization
 resources:
 - ds.yml
+- svc.yml
 configMapGenerator:
 - name: fluent-bit
   files:
@@ -8,3 +9,4 @@ configMapGenerator:
   - parser.conf
   - gtm.lua
   - mpid.lua
+

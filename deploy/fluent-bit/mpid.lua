@@ -31,7 +31,6 @@ M.get_mpid = function(ip)
         if data["code"] == 0 then
             return data["data"]["mpid"]
         else
-            print("请求失败，状态码: " .. code)
             return nil
         end
     else

@@ -4,5 +4,5 @@ import json
 
 # 模拟 json 格式日志
 def format_logger(data):
-    data["timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # 转换为东八区时间
     print(json.dumps(data))

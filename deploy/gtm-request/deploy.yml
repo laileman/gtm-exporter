@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtm-request
+  namespace: default
+  labels:
+    app: gtm-request
+spec:
+  selector:
+    matchLabels:
+      app: gtm-request
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gtm-request
+    spec:
+      containers:
+      - name: gtm-request
+        image:  lailemon/gtm-request:v0.0.1
+        
+        env:
+        - name: GTM_URL
+          value: gtm-pod:8080
+        resources:
+          requests:
+            memory: 100Mi
+            cpu: 100m
+          limits:
+            memory: 100Mi
+            cpu: 100m
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Shanghai
+      restartPolicy: Always

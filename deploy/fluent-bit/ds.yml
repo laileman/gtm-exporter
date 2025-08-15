@@ -17,6 +17,13 @@ spec:
       containers:
       - name: fluent-bit
         image: lailemon/fluent-bit:4.0.6-lua-v0.0.7
+        imagePullPolicy: IfNotPresent
+
+        ports:
+        - containerPort: 2020
+          name: http
+        - containerPort: 2021
+          name: metrics
         resources:
           limits:
             memory: 200Mi
