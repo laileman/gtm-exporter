@@ -52,6 +52,7 @@ async def get_mpid(mpid: int):
         return Response(code=1, msg="mpid not found", data={})
     return Response(code=0, msg="success", data={"mpid": mpid, "ip": ip})
 
+
 # 从 ip 获取 mpid
 @router.get("/ip/{ip}", response_model=Response)
 async def get_mpid_by_ip(ip: str):

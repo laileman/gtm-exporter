@@ -18,6 +18,7 @@ spec:
       containers:
       - name: mpid-server
         image:  lailemon/mpid-server:v0.0.1
+        imagePullPolicy: IfNotPresent
         args:
         - --config
         - /mpid-server/config.yml
